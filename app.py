@@ -88,16 +88,24 @@ RESUME_DATA = {
 def create_pdf(data):
     pdf = FPDF()
     pdf.set_compression(False) # Вимикаємо стиснення, щоб уникнути помилки UnicodeEncodeError
-    pdf.add_page()
     
-    # Завантаження шрифту DejaVuSans для підтримки кирилиці (працює на Linux/Streamlit Cloud)
-    font_path = "DejaVuSans.ttf"
-    if not os.path.exists(font_path):
+    # Використовуємо тимчасовий файл для шрифту, щоб уникнути проблем з правами доступу
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".ttf") as tmp_font:
+        font_path = tmp_font.name
+
+    # Завантажуємо шрифт
+    try:
         url = "https://github.com/reingart/pyfpdf/raw/master/fpdf/font/DejaVuSans.ttf"
         urllib.request.urlretrieve(url, font_path)
+    except Exception:
+        # Якщо не вдалося завантажити, повертаємо None або обробляємо помилку
+        pass
 
+    # Додаємо шрифт та налаштовуємо його ПЕРЕД додаванням сторінки
     pdf.add_font('DejaVu', '', font_path, uni=True)
     pdf.set_font('DejaVu', '', 12)
+    
+    pdf.add_page()
 
     # Заголовок
     pdf.set_font("DejaVu", '', 16)
@@ -174,6 +182,14 @@ def create_pdf(data):
     with open(tmp_path, "rb") as f:
         pdf_bytes = f.read()
     os.remove(tmp_path)
+    
+    # Видаляємо тимчасовий файл шрифту та його кеш (.pkl), якщо він створився
+    if os.path.exists(font_path):
+        os.remove(font_path)
+        pkl_path = font_path.replace(".ttf", ".pkl")
+        if os.path.exists(pkl_path):
+            os.remove(pkl_path)
+            
     return pdf_bytes
 
 # Стилізація
