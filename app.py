@@ -1,8 +1,4 @@
 import streamlit as st
-from fpdf import FPDF
-import tempfile
-import os
-import urllib.request
 
 # Налаштування сторінки
 st.set_page_config(page_title="Resume - Andrii Nikoliuk", layout="wide")
@@ -85,113 +81,6 @@ RESUME_DATA = {
     }
 }
 
-def create_pdf(data):
-    pdf = FPDF()
-    pdf.set_compression(False) # Вимикаємо стиснення, щоб уникнути помилки UnicodeEncodeError
-    
-    # Використовуємо тимчасовий файл для шрифту, щоб уникнути проблем з правами доступу
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".ttf") as tmp_font:
-        font_path = tmp_font.name
-
-    # Завантажуємо шрифт
-    try:
-        url = "https://github.com/reingart/pyfpdf/raw/master/fpdf/font/DejaVuSans.ttf"
-        urllib.request.urlretrieve(url, font_path)
-    except Exception:
-        # Якщо не вдалося завантажити, повертаємо None або обробляємо помилку
-        pass
-
-    # Додаємо шрифт та налаштовуємо його ПЕРЕД додаванням сторінки
-    pdf.add_font('DejaVu', '', font_path, uni=True)
-    pdf.set_font('DejaVu', '', 12)
-    
-    pdf.add_page()
-
-    # Заголовок
-    pdf.set_font("DejaVu", '', 16)
-    pdf.cell(0, 10, data['name'], ln=True, align='C')
-    pdf.set_font("DejaVu", '', 12)
-    pdf.cell(0, 10, data['title'], ln=True, align='C')
-    pdf.ln(5)
-
-    # Контакти
-    pdf.set_font("DejaVu", '', 10)
-    pdf.cell(0, 5, f"Email: {data['contacts']['email']} | Тел: {data['contacts']['phone']}", ln=True, align='C')
-    pdf.cell(0, 5, f"LinkedIn: {data['contacts']['linkedin']}", ln=True, align='C')
-    pdf.ln(5)
-    
-    # Досвід
-    pdf.set_font("DejaVu", '', 14)
-    pdf.cell(0, 10, "Досвід роботи", ln=True)
-    
-    for job in data['experience']:
-        pdf.set_font("DejaVu", '', 12)
-        pdf.cell(0, 6, f"{job['role']} | {job['company']}", ln=True)
-        pdf.set_font("DejaVu", '', 10)
-        pdf.cell(0, 6, job['period'], ln=True)
-        for item in job['description']:
-            pdf.multi_cell(0, 5, f"- {item}")
-        pdf.ln(2)
-        
-    # Проєкти
-    pdf.ln(5)
-    pdf.set_font("DejaVu", '', 14)
-    pdf.cell(0, 10, "Проєкти", ln=True)
-    
-    for project in data['projects']:
-        pdf.set_font("DejaVu", '', 12)
-        pdf.cell(0, 6, project['name'], ln=True)
-        pdf.set_font("DejaVu", '', 10)
-        for item in project['description']:
-            pdf.multi_cell(0, 5, f"- {item}")
-        if project['tech']:
-            pdf.cell(0, 5, f"Технології: {project['tech']}", ln=True)
-        pdf.ln(2)
-
-    # Навички
-    pdf.ln(5)
-    pdf.set_font("DejaVu", '', 14)
-    pdf.cell(0, 10, "Навички", ln=True)
-    pdf.set_font("DejaVu", '', 10)
-    for category, skills in data['skills'].items():
-        if isinstance(skills, list):
-            skill_str = ", ".join(skills) if len(skills) < 3 else "\n".join([f"- {s}" for s in skills])
-            if len(skills) >= 3:
-                 pdf.cell(0, 6, f"{category}:", ln=True)
-                 pdf.multi_cell(0, 5, skill_str)
-            else:
-                 pdf.multi_cell(0, 5, f"{category}: {skill_str}")
-        else:
-            pdf.multi_cell(0, 5, f"{category}: {skills}")
-            
-    # Освіта
-    pdf.ln(5)
-    pdf.set_font("DejaVu", '', 14)
-    pdf.cell(0, 10, "Освіта та Курси", ln=True)
-    pdf.set_font("DejaVu", '', 12)
-    pdf.multi_cell(0, 6, data['education']['university'])
-    pdf.set_font("DejaVu", '', 10)
-    for course in data['education']['courses']:
-        pdf.multi_cell(0, 5, f"- {course}")
-
-    # Використовуємо тимчасовий файл для збереження PDF, щоб уникнути проблем з кодуванням
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-        tmp_path = tmp_file.name
-    
-    pdf.output(tmp_path)
-    with open(tmp_path, "rb") as f:
-        pdf_bytes = f.read()
-    os.remove(tmp_path)
-    
-    # Видаляємо тимчасовий файл шрифту та його кеш (.pkl), якщо він створився
-    if os.path.exists(font_path):
-        os.remove(font_path)
-        pkl_path = font_path.replace(".ttf", ".pkl")
-        if os.path.exists(pkl_path):
-            os.remove(pkl_path)
-            
-    return pdf_bytes
-
 # Стилізація
 st.markdown("""
     <style>
@@ -208,16 +97,6 @@ with st.sidebar:
     st.write(f"Email: {RESUME_DATA['contacts']['email']}")
     st.markdown("---")
     st.write(f"LinkedIn: [{RESUME_DATA['contacts']['linkedin']}]")
-    
-    st.markdown("---")
-    # Кнопка завантаження PDF
-    pdf_bytes = create_pdf(RESUME_DATA)
-    st.download_button(
-        label="Завантажити резюме (PDF)",
-        data=pdf_bytes,
-        file_name="Andrii_Nikoliuk_Resume.pdf",
-        mime="application/pdf"
-    )
 
 # --- ГОЛОВНИЙ БЛОК ---
 st.title(RESUME_DATA['name'])
