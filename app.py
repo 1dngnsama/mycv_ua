@@ -2,6 +2,7 @@ import streamlit as st
 from fpdf import FPDF
 import tempfile
 import os
+import urllib.request
 
 # Налаштування сторінки
 st.set_page_config(page_title="Resume - Andrii Nikoliuk", layout="wide")
@@ -88,35 +89,36 @@ def create_pdf(data):
     pdf = FPDF()
     pdf.add_page()
     
-    # Спроба підключити шрифт Arial для кирилиці (Windows шлях)
-    font_path = "C:\\Windows\\Fonts\\arial.ttf"
-    try:
-        pdf.add_font('Arial', '', font_path, uni=True)
-        pdf.set_font('Arial', '', 12)
-    except RuntimeError:
-        pdf.set_font("Arial", size=12) # Fallback, кирилиця може не працювати
+    # Завантаження шрифту DejaVuSans для підтримки кирилиці (працює на Linux/Streamlit Cloud)
+    font_path = "DejaVuSans.ttf"
+    if not os.path.exists(font_path):
+        url = "https://github.com/reingart/pyfpdf/raw/master/fpdf/font/DejaVuSans.ttf"
+        urllib.request.urlretrieve(url, font_path)
+
+    pdf.add_font('DejaVu', '', font_path, uni=True)
+    pdf.set_font('DejaVu', '', 12)
 
     # Заголовок
-    pdf.set_font("Arial", '', 16)
+    pdf.set_font("DejaVu", '', 16)
     pdf.cell(0, 10, data['name'], ln=True, align='C')
-    pdf.set_font("Arial", '', 12)
+    pdf.set_font("DejaVu", '', 12)
     pdf.cell(0, 10, data['title'], ln=True, align='C')
     pdf.ln(5)
 
     # Контакти
-    pdf.set_font("Arial", '', 10)
+    pdf.set_font("DejaVu", '', 10)
     pdf.cell(0, 5, f"Email: {data['contacts']['email']} | Тел: {data['contacts']['phone']}", ln=True, align='C')
     pdf.cell(0, 5, f"LinkedIn: {data['contacts']['linkedin']}", ln=True, align='C')
     pdf.ln(5)
     
     # Досвід
-    pdf.set_font("Arial", '', 14)
+    pdf.set_font("DejaVu", '', 14)
     pdf.cell(0, 10, "Досвід роботи", ln=True)
     
     for job in data['experience']:
-        pdf.set_font("Arial", '', 12)
+        pdf.set_font("DejaVu", '', 12)
         pdf.cell(0, 6, f"{job['role']} | {job['company']}", ln=True)
-        pdf.set_font("Arial", '', 10)
+        pdf.set_font("DejaVu", '', 10)
         pdf.cell(0, 6, job['period'], ln=True)
         for item in job['description']:
             pdf.multi_cell(0, 5, f"- {item}")
@@ -124,13 +126,13 @@ def create_pdf(data):
         
     # Проєкти
     pdf.ln(5)
-    pdf.set_font("Arial", '', 14)
+    pdf.set_font("DejaVu", '', 14)
     pdf.cell(0, 10, "Проєкти", ln=True)
     
     for project in data['projects']:
-        pdf.set_font("Arial", '', 12)
+        pdf.set_font("DejaVu", '', 12)
         pdf.cell(0, 6, project['name'], ln=True)
-        pdf.set_font("Arial", '', 10)
+        pdf.set_font("DejaVu", '', 10)
         for item in project['description']:
             pdf.multi_cell(0, 5, f"- {item}")
         if project['tech']:
@@ -139,9 +141,9 @@ def create_pdf(data):
 
     # Навички
     pdf.ln(5)
-    pdf.set_font("Arial", '', 14)
+    pdf.set_font("DejaVu", '', 14)
     pdf.cell(0, 10, "Навички", ln=True)
-    pdf.set_font("Arial", '', 10)
+    pdf.set_font("DejaVu", '', 10)
     for category, skills in data['skills'].items():
         if isinstance(skills, list):
             skill_str = ", ".join(skills) if len(skills) < 3 else "\n".join([f"- {s}" for s in skills])
@@ -155,11 +157,11 @@ def create_pdf(data):
             
     # Освіта
     pdf.ln(5)
-    pdf.set_font("Arial", '', 14)
+    pdf.set_font("DejaVu", '', 14)
     pdf.cell(0, 10, "Освіта та Курси", ln=True)
-    pdf.set_font("Arial", '', 12)
+    pdf.set_font("DejaVu", '', 12)
     pdf.multi_cell(0, 6, data['education']['university'])
-    pdf.set_font("Arial", '', 10)
+    pdf.set_font("DejaVu", '', 10)
     for course in data['education']['courses']:
         pdf.multi_cell(0, 5, f"- {course}")
 
