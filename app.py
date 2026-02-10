@@ -87,6 +87,7 @@ RESUME_DATA = {
 
 def create_pdf(data):
     pdf = FPDF()
+    pdf.set_compression(False) # Вимикаємо стиснення, щоб уникнути помилки UnicodeEncodeError
     pdf.add_page()
     
     # Завантаження шрифту DejaVuSans для підтримки кирилиці (працює на Linux/Streamlit Cloud)
