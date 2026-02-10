@@ -1,5 +1,7 @@
 import streamlit as st
 from fpdf import FPDF
+import tempfile
+import os
 
 # Налаштування сторінки
 st.set_page_config(page_title="Resume - Andrii Nikoliuk", layout="wide")
@@ -161,7 +163,15 @@ def create_pdf(data):
     for course in data['education']['courses']:
         pdf.multi_cell(0, 5, f"- {course}")
 
-    return pdf.output(dest='S').encode('latin-1')
+    # Використовуємо тимчасовий файл для збереження PDF, щоб уникнути проблем з кодуванням
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+        tmp_path = tmp_file.name
+    
+    pdf.output(tmp_path)
+    with open(tmp_path, "rb") as f:
+        pdf_bytes = f.read()
+    os.remove(tmp_path)
+    return pdf_bytes
 
 # Стилізація
 st.markdown("""
