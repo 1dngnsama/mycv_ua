@@ -18,7 +18,7 @@ RESUME_DATA = {
         {
             "role": "Junior AI Tools & Data Applications Developer",
             "company": "NGO CAT-UA",
-            "period": "вер. 2025 – лют. 2026",
+            "period": "січ. 2025 – січ. 2026",
             "description": [
                 "Проєктування та розробка асинхронного Backend для додатків аналізу новин на базі FastAPI.",
                 "Інтеграція та налаштування LLM (OpenAI, Google) для автоматизації класифікації та сумаризації медіа-контенту.",
