@@ -147,7 +147,7 @@ col_skills, col_edu = st.columns(2)
 with col_skills:
     st.header("Навички")
     st.write("**Data & ML:**")
-    for s in RESUME_DATA['skills']['Data Science & ML']:
+    for s in RESUME_DATA['skills']['Data Science & ML & AI']:
         st.write(f"- {s}")
     st.write("**Engineering & BI:**")
     for s in RESUME_DATA['skills']['Engineering & BI']:
