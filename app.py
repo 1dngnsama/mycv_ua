@@ -25,7 +25,7 @@ RESUME_DATA = {
                 "Створення користувацьких інтерфейсів на Streamlit для візуалізації результатів аналізу та взаємодії з моделями.",
                 "Оптимізація обробки даних, що дозволило підвищити швидкість аналізу текстової інформації."
             ],
-            "stack": "Python, FastAPI, Streamlit, LLM Integration, REST API, SQL."
+            "stack": "Python, FastAPI, Streamlit, LLM Integration, LangChain, REST API, SQL."
         },
         {
             "role": "Python Tutor",
@@ -35,7 +35,7 @@ RESUME_DATA = {
                 "Викладання основ програмування та прикладного Python.",
                 "Допомога у розвитку алгоритмічного мислення."
             ],
-            "stack": "Python, Object-Oriented Programming (OOP)."
+            "stack": "Python, Object-Oriented Programming, Data analysis, Machine learning"
         }
     ],
     "projects": [
@@ -46,7 +46,7 @@ RESUME_DATA = {
                 "Протренував та порівняв моделі класифікації за допомогою Scikit-learn для досягнення оптимальних метрик точності.",
                 "Розгорнув модель як веб-сервіс для класифікації запитів у реальному часі."
             ],
-            "tech": "Scikit-learn, Pandas, Streamlit, Jupyter.",
+            "tech": "Scikit-learn, Pandas, Streamlit.",
             "link": "https://1dngnsama-nlp.streamlit.app/ мова введеня - Англійська"
         },
         {
@@ -55,18 +55,18 @@ RESUME_DATA = {
                 "Веб-додаток для автоматизації розподілу місць розселення у дитячому таборі.",
                 "Оптимізація процесу: скорочення часу з декількох днів до хвилин."
             ],
-            "tech": None,
+            "tech": 'pandas, streamlit',
             "link": None
         }
     ],
     "skills": {
-        "Data Science & ML": [
-            "Python (Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, BeautifulSoup)",
+        "Data Science & ML & AI": [
+            "Python (Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, web scraping libraries)",
             "NLP, статистичний аналіз, EDA, А/В тестування",
-            "SQL (PostgreSQL, MySQL, Window Functions, CTE)"
+            "SQL (PostgreSQL, MySQL, Window Functions, CTE)",
         ],
         "Engineering & BI": [
-            "FastAPI, Streamlit, REST API, LLM Integration",
+            "FastAPI, Streamlit, REST API, LLM Integration (LangChain)",
             "Tableau, Looker Studio, Google Cloud, Azure, Git"
         ],
         "Languages": "Англійська (B2), Українська (C1)"
