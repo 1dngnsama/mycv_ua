@@ -85,6 +85,18 @@ RESUME_DATA = {
     },
     "experience": [
         {
+            "role": "Pricing Analyst (Data & Automation)",
+            "company": "THRASH!ТРАШ!",
+            "period": "кві 2026 р. – дотепер",
+            "description": [
+                "Сфокусований на моніторингу ринку, відстеженні конкурентів та оптимізації робочих процесів за допомогою автоматизації даних та написання скриптів.",
+                "Розробка та підтримка власних веб-скрейперів на Python за допомогою BeautifulSoup4 та Playwright для автоматизації збору даних конкурентів з динамічних веб-сайтів, що рендеряться за допомогою JS.",
+                "Проєктування легковагових ETL-конвеєрів з використанням Pandas для очищення, об'єднання та перетворення неструктурованих даних з різних файлових джерел в єдині аналітичні набори даних.",
+                "Створення внутрішніх скриптів автоматизації та мікро-утиліт для усунення ручного введення даних та оптимізації процесів рутинної звітності."
+            ],
+            "stack": "Python, Playwright, BeautifulSoup4, Pandas, Data Automation, SQL, Excel/Google Sheets, ETL, Data Analysis, Web Scraping, Relational Databases, EDA, A/B Testing"
+        },
+        {
             "role": "Junior AI Tools & Data Applications Developer",
             "company": "NGO CAT-UA",
             "period": "січ. 2025 – січ. 2026",
